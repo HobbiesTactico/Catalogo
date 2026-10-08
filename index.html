@@ -87,7 +87,6 @@ main{overflow-x:clip}
 .pn{width:40px;height:40px;border-radius:50%;border:1px solid transparent;background:transparent;color:var(--mut);cursor:pointer;display:grid;place-items:center;transition:.18s;z-index:3;padding:0}.pn svg{width:24px;height:24px}
 .pn:hover{border-color:var(--line);background:var(--card);color:var(--gold)}.pn:active{transform:scale(.92)}.pn:disabled{opacity:.25;pointer-events:none}
 .pcnt{display:none;font:700 .85rem 'JetBrains Mono',monospace;color:var(--mut);text-align:center}
-@media(max-width:860px){.stage{grid-template-columns:auto 1fr auto;row-gap:12px}#hero{grid-column:1/-1;grid-row:1}.pn.l{grid-row:2;grid-column:1}.pcnt{display:block;grid-row:2;grid-column:2}.pn.r{grid-row:2;grid-column:3}.pn{width:44px;height:44px;border-color:var(--line);background:var(--card);color:var(--ink)}}
 /* fotos del producto y ficha: contador y flechas internas */
 .pho img.mi{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .gc{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:2;font:700 .72rem 'JetBrains Mono',monospace;color:var(--ink);background:color-mix(in srgb,var(--card) 85%,transparent);backdrop-filter:blur(6px);border:1px solid var(--line);padding:3px 10px;border-radius:99px}
@@ -95,6 +94,28 @@ main{overflow-x:clip}
 .fs{position:relative}.dots{display:flex;gap:2px}.dt{width:20px;height:20px;border:none;background:none;cursor:pointer;display:grid;place-items:center;padding:0}.dt:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--line);transition:.18s}.dt.on:before{background:var(--gold);transform:scale(1.25)}.dt:hover:before{background:var(--gold)}
 .fk{display:grid;overflow:hidden}.fm{grid-area:1/1;width:100%;display:block;cursor:zoom-in}
 #lb .lbn{position:fixed;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:none;background:#0008;color:#fff;cursor:pointer;display:grid;place-items:center;z-index:81;padding:0}#lb .lbn:hover{background:#000c;color:var(--gold)}#lb .lbn svg{width:24px;height:24px}#lb .lbn.l{left:16px}#lb .lbn.r{right:16px}#lb.s1 .lbn{display:none}
+/* movil */
+.gd{display:none}
+@media(max-width:860px){
+:root{--ph:min(calc((100vw - 32px)*1.25),64vh)}
+.in{padding:8px 16px;gap:8px}.brand{gap:8px}.brand .mark{height:32px}.brand .name{height:26px}.ib{width:36px;height:36px}.hl{gap:6px}
+#cats{padding-bottom:8px}.chip{padding:6px 13px;font-size:.8rem}
+main{padding-top:14px;padding-bottom:20px}
+.stage{display:block;position:relative}
+.pn{position:absolute;top:calc(var(--ph)/2 - 20px);width:40px;height:40px;background:color-mix(in srgb,var(--card) 72%,transparent);backdrop-filter:blur(6px);border:1px solid var(--line);color:var(--ink)}
+.pn.l{left:8px}.pn.r{right:8px}
+.pcnt{display:block;position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:3;font:700 .72rem 'JetBrains Mono',monospace;color:var(--ink);background:color-mix(in srgb,var(--card) 72%,transparent);backdrop-filter:blur(6px);border:1px solid var(--line);padding:3px 10px;border-radius:99px}
+.hero{border-radius:22px}
+.pho{aspect-ratio:auto;height:var(--ph)}
+.ths,.gc{display:none}
+.gd{display:flex;position:absolute;bottom:12px;left:50%;transform:translateX(-50%);gap:6px;z-index:2;padding:6px 9px;border-radius:99px;background:color-mix(in srgb,var(--card) 70%,transparent);backdrop-filter:blur(6px);pointer-events:none}
+.gd i{width:6px;height:6px;border-radius:99px;background:var(--mut);opacity:.55;transition:.25s}.gd i.on{width:16px;background:var(--gold);opacity:1}
+.inf{padding:18px 18px 22px;gap:12px}h1{font-size:1.5rem}.pr{gap:10px}.pr b{font-size:1.55rem}
+#grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#grid .tx{padding:10px 11px}#grid .tn{font-size:.85rem}#grid .tp{font-size:.9rem}
+.bar{margin:22px 0 12px;gap:8px}.sw{max-width:none;flex:1 1 100%}#sort{flex:1 1 100%}.tg{flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tg .chip{flex:none}
+footer{padding-bottom:calc(30px + env(safe-area-inset-bottom))}
+}
 /* animaciones */
 @keyframes hIn-n{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
 @keyframes hIn-p{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
@@ -249,7 +270,7 @@ let nextDir=null,heroTok=0;
 const heroHTML=p=>{
   const c=catName(p.categoria_id),g=pics(p),f=fpics(p);
   const arr=(a,t)=>`<button class="nv l" data-a="${a}" data-d="-1" aria-label="${t} anterior">${CH.l}</button><button class="nv r" data-a="${a}" data-d="1" aria-label="${t} siguiente">${CH.r}</button>`;
-  return `<div class="hero"><div class="gl"><div class="pho" data-sw="g">${g[0]?`<img class="mi" id="mi" data-a="zoom" src="${esc(g[0])}" alt="${esc(p.nombre)}">`:ph}${g.length>1?arr('img','Foto')+`<span class="gc" id="gc">1 / ${g.length}</span>`:''}</div>${g.length>1?`<div class="ths">${g.map((u,i)=>`<img class="${i?'':'on'}" src="${esc(u)}" data-a="gal" data-i="${i}" alt="">`).join('')}</div>`:''}</div><div class="inf">${c?`<span class="pill">${esc(c)}</span>`:''}<h1>${esc(p.nombre)}</h1><div class="pr"><b>${money(p.precio)}</b><span id="hst" class="st ${p.stock>0?'ok':'no'}">${p.stock>0?`Disponible: ${p.stock} und.`:'Agotado'}</span></div>${p.descripcion?`<p class="dsc">${esc(p.descripcion)}</p>`:''}${f.length?`<div class="fi"><h3><span>Ficha técnica</span>${f.length>1?`<span class="dots">${f.map((_,i)=>`<button type="button" class="dt ${i?'':'on'}" data-a="fdot" data-i="${i}" aria-label="Ficha ${i+1}"></button>`).join('')}</span>`:''}</h3><div class="fs" data-sw="f" data-i="0" data-u="${esc(JSON.stringify(f))}"><div class="fk"><img class="fm" id="fmi" data-a="zoom" src="${esc(f[0])}" alt="Ficha técnica"></div></div></div>`:''}</div></div>`;
+  return `<div class="hero"><div class="gl"><div class="pho" data-sw="g">${g[0]?`<img class="mi" id="mi" data-a="zoom" src="${esc(g[0])}" alt="${esc(p.nombre)}">`:ph}${g.length>1?arr('img','Foto')+`<span class="gc" id="gc">1 / ${g.length}</span><div class="gd" id="gd">${g.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}</div>${g.length>1?`<div class="ths">${g.map((u,i)=>`<img class="${i?'':'on'}" src="${esc(u)}" data-a="gal" data-i="${i}" alt="">`).join('')}</div>`:''}</div><div class="inf">${c?`<span class="pill">${esc(c)}</span>`:''}<h1>${esc(p.nombre)}</h1><div class="pr"><b>${money(p.precio)}</b><span id="hst" class="st ${p.stock>0?'ok':'no'}">${p.stock>0?`Disponible: ${p.stock} und.`:'Agotado'}</span></div>${p.descripcion?`<p class="dsc">${esc(p.descripcion)}</p>`:''}${f.length?`<div class="fi"><h3><span>Ficha técnica</span>${f.length>1?`<span class="dots">${f.map((_,i)=>`<button type="button" class="dt ${i?'':'on'}" data-a="fdot" data-i="${i}" aria-label="Ficha ${i+1}"></button>`).join('')}</span>`:''}</h3><div class="fs" data-sw="f" data-i="0" data-u="${esc(JSON.stringify(f))}"><div class="fk"><img class="fm" id="fmi" data-a="zoom" src="${esc(f[0])}" alt="Ficha técnica"></div></div></div>`:''}</div></div>`;
 };
 function hero(){
   const p=prods.find(x=>x.id===sel),h=$('#hero');
@@ -275,7 +296,7 @@ function showImg(i,dir){
   const t=$$('.ths img');if(t.length<2)return;
   const cur=t.findIndex(x=>x.classList.contains('on'));i=(i+t.length)%t.length;if(i===cur)return;
   t.forEach((x,j)=>x.classList.toggle('on',j===i));
-  swapImg($('#mi'),t[i].src,dir||(i>cur?'n':'p'));$('#gc').textContent=`${i+1} / ${t.length}`;
+  swapImg($('#mi'),t[i].src,dir||(i>cur?'n':'p'));$('#gc').textContent=`${i+1} / ${t.length}`;$$('#gd i').forEach((x,j)=>x.classList.toggle('on',j===i));
   const s=t[i].parentElement;s.scrollTo({left:t[i].offsetLeft-s.clientWidth/2+t[i].clientWidth/2,behavior:'smooth'});
 }
 function ficTo(i){
@@ -383,7 +404,7 @@ const A={
   theme:()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'),
   cat:d=>{fCat=d.id?+d.id:null;fTags.clear();render()},
   tag:d=>{fTags.has(d.t)?fTags.delete(d.t):fTags.add(d.t);render()},
-  pick:d=>{const id=+d.id;if(id===sel)return;const l=items();nextDir=l.findIndex(p=>p.id===id)>l.findIndex(p=>p.id===sel)?'n':'p';sel=id;history.replaceState(null,'','#p'+sel);render()},
+  pick:d=>{const id=+d.id;if(id===sel)return;const l=items();nextDir=l.findIndex(p=>p.id===id)>l.findIndex(p=>p.id===sel)?'n':'p';sel=id;history.replaceState(null,'','#p'+sel);render();if(matchMedia('(max-width:860px)').matches)scrollTo({top:$('#stage').getBoundingClientRect().top+scrollY-$('header').offsetHeight-10,behavior:'smooth'})},
   nav:d=>{const l=items();if(l.length<2)return;const i=l.findIndex(p=>p.id===sel),n=+d.d;nextDir=n>0?'n':'p';sel=l[(i+n+l.length)%l.length].id;history.replaceState(null,'','#p'+sel);render()},
   gal:d=>showImg(+d.i),img:d=>{const t=$$('.ths img');showImg(t.findIndex(x=>x.classList.contains('on'))+ +d.d,+d.d>0?'n':'p')},fic:d=>ficTo(+($('.fs')||{dataset:{i:0}}).dataset.i+ +d.d),fdot:d=>ficTo(+d.i),lbp:()=>lbShow(lbI-1),lbn:()=>lbShow(lbI+1),
   zoom:(d,el)=>{const fs=el.closest('.fs'),t=$$('.ths img');if(fs){lbL=JSON.parse(fs.dataset.u);lbI=+fs.dataset.i}else if(t.length>1){lbL=t.map(x=>x.src);lbI=Math.max(0,t.findIndex(x=>x.classList.contains('on')))}else{lbL=[el.src];lbI=0}$('#lb').classList.toggle('s1',lbL.length<2);$('#lb img').src=lbL[lbI];$('#lb').classList.remove('hidden')},closeLb:()=>$('#lb').classList.add('hidden'),
