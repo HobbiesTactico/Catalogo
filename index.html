@@ -131,6 +131,25 @@ footer{padding-bottom:calc(30px + env(safe-area-inset-bottom))}
 .s-out-n{animation:sOut-n .3s ease both;pointer-events:none}.s-out-p{animation:sOut-p .3s ease both;pointer-events:none}
 .ib.i-wa:hover,.ib.i-ig:hover{transform:translateY(-2px)}.ib{transition:.15s}
 @media(prefers-reduced-motion:reduce){.hero,.hero[class*=in-],.hero[class*=out-],[class*=s-in-],[class*=s-out-]{animation-duration:.01ms!important}}
+/* movil: primero la cuadricula, la ficha grande se abre al tocar */
+.bk{display:none}
+@media(max-width:860px){
+#stage{display:none}
+body.pv #stage{display:block}
+body.pv .bar,body.pv #grid,body.pv #cats{display:none}
+body.pv .bk{display:inline-flex;align-items:center;gap:4px;margin-bottom:10px}
+.c.sel{border-color:var(--line);box-shadow:none}
+#grid .c:hover{transform:none}
+}
+/* importar desde excel */
+.imp{max-width:600px;text-align:left}.imp h2{text-align:left}
+.impl{max-height:44vh;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);margin:12px 0}
+.impl table{width:100%;border-collapse:collapse;font-size:.8rem}
+.impl th,.impl td{padding:7px 10px;border-top:1px solid var(--line);text-align:left;white-space:nowrap}
+.impl th{position:sticky;top:0;background:var(--bg2);color:var(--mut);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;border-top:none}
+.impl td.up{color:var(--mut)}.impl td.nw{color:var(--ok);font-weight:700}
+.imps{display:flex;gap:8px;flex-wrap:wrap}.imps span{font-size:.78rem;font-weight:700;padding:4px 11px;border-radius:99px;background:var(--glow);color:var(--gold)}
+.imh{color:var(--mut);font-size:.85rem;margin:0 0 10px}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".25" stop-color="#FA7E1E"/><stop offset=".5" stop-color="#D62976"/><stop offset=".75" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs></svg>
@@ -139,6 +158,7 @@ footer{padding-bottom:calc(30px + env(safe-area-inset-bottom))}
   <nav id="cats"></nav>
 </header>
 <main>
+  <button class="btn gh sm bk" data-a="back"></button>
   <div id="stage" class="stage"><button class="pn l" data-a="nav" data-d="-1" aria-label="Producto anterior"></button><section id="hero"></section><button class="pn r" data-a="nav" data-d="1" aria-label="Producto siguiente"></button><span class="pcnt" id="pcnt"></span></div>
   <div class="bar">
     <div class="sw"><span id="ico"></span><input id="q" type="search" placeholder="Buscar producto"></div>
@@ -166,7 +186,7 @@ footer{padding-bottom:calc(30px + env(safe-area-inset-bottom))}
         <div class="sw"><span id="ico2"></span><input id="aq" type="search" placeholder="Buscar en inventario"></div>
         <select id="ac"></select>
         <div id="af" class="tg"></div>
-        <button class="btn" data-a="nuevo">+ Nuevo producto</button>
+        <button class="btn gh" data-a="importar">Importar Excel</button><button class="btn" data-a="nuevo">+ Nuevo producto</button>
       </div>
       <div id="ag" class="g"></div>
     </div>
@@ -176,6 +196,9 @@ footer{padding-bottom:calc(30px + env(safe-area-inset-bottom))}
     </div>
   </div>
 </div>
+
+<input type="file" id="xf" accept=".xlsx,.xls,.csv" class="hidden">
+<div id="im" class="ov hidden" style="justify-content:center;align-items:center;padding:16px"><div class="mod imp"><h2>Importar desde Excel</h2><div id="imb"></div></div></div>
 
 <div id="dw" class="ov hidden"><form class="dr" id="pf">
   <h2 id="dt">Nuevo producto</h2>
@@ -211,7 +234,7 @@ IC.wa=brand("M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-
 IC.ig=brand("M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077","url(#igg)");
 $$('.i-wa').forEach(e=>e.innerHTML=IC.wa);$$('.i-ig').forEach(e=>e.innerHTML=IC.ig);
 const CH={l:ic('<path d="M15 6l-6 6 6 6"/>'),r:ic('<path d="M9 6l6 6-6 6"/>')};
-$$('.pn.l,.lbn.l').forEach(b=>b.innerHTML=CH.l);$$('.pn.r,.lbn.r').forEach(b=>b.innerHTML=CH.r);
+$$('.pn.l,.lbn.l').forEach(b=>b.innerHTML=CH.l);$('.bk').innerHTML=CH.l+' Volver';$$('.pn.r,.lbn.r').forEach(b=>b.innerHTML=CH.r);
 const MARK=$('.mark').src;$$('[data-m]').forEach(i=>i.src=MARK);$('#fav').href=MARK;
 let cats=[],prods=[],sel=null,fCat=null,fTags=new Set(),q='',sort='n',isAdmin=false,editing=null,aq='',aCat='',aF='all';
 
@@ -226,7 +249,7 @@ async function load(){
   const [c,p]=await Promise.all([sb.from('categorias').select('*').order('orden').order('nombre'),sb.from('productos').select('*').order('created_at',{ascending:false})]);
   if(c.error||p.error){$('#hero').innerHTML='<div class="emp">No se pudo cargar el catálogo.</div>';console.error(c.error||p.error);return}
   cats=c.data;prods=p.data;
-  const m=location.hash.match(/^#p(\d+)$/);if(m&&sel===null)sel=+m[1];
+  const m=location.hash.match(/^#p(\d+)$/);if(m&&sel===null){sel=+m[1];if(isMob())setPV(true)}
   render();if(isAdmin)adminRender();
 }
 const catName=id=>(cats.find(c=>c.id===id)||{}).nombre;
@@ -266,6 +289,10 @@ function render(){
   if(l.length)sync(g,l,p=>p.id,pcard);else g.innerHTML='<div class="emp">No hay productos con estos filtros.</div>';
   $$('#grid .c').forEach(e=>e.classList.toggle('sel',+e.dataset.k===sel));
 }
+/* movil: vista cuadricula <-> ficha */
+const isMob=()=>matchMedia('(max-width:860px)').matches;let gridY=0;
+function setPV(on){const was=document.body.classList.contains('pv');if(on===was)return;if(on){gridY=scrollY;document.body.classList.add('pv');scrollTo(0,0)}else{document.body.classList.remove('pv');scrollTo(0,gridY)}}
+addEventListener('popstate',()=>{const m=location.hash.match(/^#p(\d+)$/);if(m)sel=+m[1];setPV(!!m&&isMob());render()});
 let nextDir=null,heroTok=0;
 const heroHTML=p=>{
   const c=catName(p.categoria_id),g=pics(p),f=fpics(p);
@@ -399,13 +426,66 @@ async function delCat(id){
   cats=cats.filter(c=>c.id!==id);prods.forEach(p=>{if(p.categoria_id===id)p.categoria_id=null});if(fCat===id)fCat=null;render();adminRender();
 }
 
+
+/* ===== importar productos desde Excel (quedan ocultos, solo texto; las fotos se agregan despues) ===== */
+const norm=s=>String(s??'').normalize('NFD').replace(/[̀-ͯ]/g,'').trim().toLowerCase();
+const COLS={ref:['referencia','ref','codigo','sku'],nom:['nombre','producto','name'],cat:['categoria','category'],stock:['stock','cantidad','existencias','inventario'],precio:['precio','valor','price']};
+const toNum=v=>{if(typeof v==='number')return Math.round(v)||0;const s=String(v??'').replace(/,\d{1,2}$/,'').replace(/[^\d-]/g,'');return parseInt(s,10)||0};
+const loadXLSX=()=>window.XLSX?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';s.onload=ok;s.onerror=()=>no(new Error('No se pudo cargar el lector de Excel. Revisa tu conexión.'));document.head.appendChild(s)});
+let impRows=[];
+async function readExcel(file){
+  await loadXLSX();
+  const wb=XLSX.read(await file.arrayBuffer(),{type:'array'}),map=new Map();let found=false;
+  wb.SheetNames.forEach(n=>{
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:'',blankrows:false});
+    const hi=rows.findIndex(r=>r.some(c=>COLS.nom.includes(norm(c))));if(hi<0)return;found=true;
+    const h=rows[hi].map(norm),ix=k=>h.findIndex(x=>COLS[k].includes(x));
+    const I={ref:ix('ref'),nom:ix('nom'),cat:ix('cat'),stock:ix('stock'),precio:ix('precio')};
+    rows.slice(hi+1).forEach(r=>{
+      const g=i=>i<0?'':String(r[i]??'').trim(),nom=g(I.nom),ref=g(I.ref);if(!nom&&!ref)return;
+      const nombre=!ref||norm(nom).includes(norm(ref))?nom:(nom+' '+ref).trim();
+      map.set(norm(nombre),{nombre,cat:g(I.cat),stock:Math.max(0,toNum(r[I.stock])),precio:Math.max(0,toNum(r[I.precio]))});
+    });
+  });
+  if(!found)throw new Error('No encontré la columna NOMBRE. Las columnas esperadas son: REFERENCIA, NOMBRE, CATEGORIA, STOCK, PRECIO.');
+  return [...map.values()];
+}
+const findProd=r=>prods.find(p=>norm(p.nombre)===norm(r.nombre));
+function impPreview(){
+  const nu=impRows.filter(r=>!findProd(r)).length,up=impRows.length-nu;
+  const nc=new Set(impRows.map(r=>r.cat).filter(c=>c&&!cats.find(x=>norm(x.nombre)===norm(c))).map(norm)).size;
+  $('#imb').innerHTML=`<p class="imh">Los productos nuevos se crean <b>ocultos</b> y sin fotos. Cuando les subas fotos los activas desde “Editar”.</p>
+  <div class="imps"><span>${nu} nuevos</span><span>${up} a actualizar</span>${nc?`<span>${nc} categorías nuevas</span>`:''}</div>
+  <div class="impl"><table><thead><tr><th>Producto</th><th>Categoría</th><th>Stock</th><th>Precio</th><th></th></tr></thead><tbody>${impRows.map(r=>{const e=findProd(r);return `<tr><td>${esc(r.nombre)}</td><td>${esc(r.cat||'—')}</td><td>${r.stock}</td><td>${money(r.precio)}</td><td class="${e?'up':'nw'}">${e?'Actualizar':'Nuevo'}</td></tr>`}).join('')}</tbody></table></div>
+  <div class="acts" style="margin-top:6px"><button class="btn" id="imgo" data-a="doImport">Importar ${impRows.length} productos</button><button class="btn gh" data-a="closeImp">Cancelar</button></div>`;
+}
+$('#xf').addEventListener('change',async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;
+  try{toast('Leyendo Excel...');impRows=await readExcel(f);if(!impRows.length)throw new Error('El archivo no tiene filas con productos.');impPreview();$('#im').classList.remove('hidden')}
+  catch(err){toast(err.message||'No se pudo leer el archivo',1)}
+});
+async function doImport(){
+  const b=$('#imgo');b.disabled=true;b.textContent='Importando...';
+  try{
+    const miss=[...new Map(impRows.filter(r=>r.cat&&!cats.find(x=>norm(x.nombre)===norm(r.cat))).map(r=>[norm(r.cat),r.cat])).values()];
+    if(miss.length){const r=await sb.from('categorias').insert(miss.map((n,i)=>({nombre:n,orden:cats.length+i+1}))).select();if(r.error)throw r.error;cats.push(...r.data)}
+    const cid=n=>n?((cats.find(x=>norm(x.nombre)===norm(n))||{}).id??null):null,nuevos=[],upd=[];
+    impRows.forEach(r=>{const base={categoria_id:cid(r.cat),precio:r.precio,stock:r.stock},ex=findProd(r);
+      ex?upd.push([ex.id,base]):nuevos.push({nombre:r.nombre,...base,etiquetas:[],descripcion:null,fotos:[],ficha_fotos:[],foto_url:null,activo:false})});
+    if(nuevos.length){const r=await sb.from('productos').insert(nuevos).select();if(r.error)throw r.error;prods.unshift(...r.data)}
+    const rs=await Promise.all(upd.map(([id,v])=>sb.from('productos').update(v).eq('id',id).select().single()));
+    rs.forEach(r=>{if(r.error)throw r.error;const i=prods.findIndex(x=>x.id===r.data.id);if(i>=0)prods[i]=r.data});
+    $('#im').classList.add('hidden');render();adminRender();toast(`Listo: ${nuevos.length} creados, ${upd.length} actualizados`);
+  }catch(err){toast(err.message||'Error al importar',1);b.disabled=false;b.textContent=`Importar ${impRows.length} productos`}
+}
+
 /* eventos */
 const A={
   theme:()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'),
   cat:d=>{fCat=d.id?+d.id:null;fTags.clear();render()},
   tag:d=>{fTags.has(d.t)?fTags.delete(d.t):fTags.add(d.t);render()},
-  pick:d=>{const id=+d.id;if(id===sel)return;const l=items();nextDir=l.findIndex(p=>p.id===id)>l.findIndex(p=>p.id===sel)?'n':'p';sel=id;history.replaceState(null,'','#p'+sel);render();if(matchMedia('(max-width:860px)').matches)scrollTo({top:$('#stage').getBoundingClientRect().top+scrollY-$('header').offsetHeight-10,behavior:'smooth'})},
-  nav:d=>{const l=items();if(l.length<2)return;const i=l.findIndex(p=>p.id===sel),n=+d.d;nextDir=n>0?'n':'p';sel=l[(i+n+l.length)%l.length].id;history.replaceState(null,'','#p'+sel);render()},
+  pick:d=>{const id=+d.id;if(isMob()){nextDir=null;sel=id;history.pushState({pv:1},'','#p'+sel);setPV(true);render();return}if(id===sel)return;const l=items();nextDir=l.findIndex(p=>p.id===id)>l.findIndex(p=>p.id===sel)?'n':'p';sel=id;history.replaceState(null,'','#p'+sel);render();if(matchMedia('(max-width:860px)').matches)scrollTo({top:$('#stage').getBoundingClientRect().top+scrollY-$('header').offsetHeight-10,behavior:'smooth'})},
+  nav:d=>{const l=items();if(l.length<2)return;const i=l.findIndex(p=>p.id===sel),n=+d.d;nextDir=n>0?'n':'p';sel=l[(i+n+l.length)%l.length].id;history.replaceState(history.state,'','#p'+sel);render()},
   gal:d=>showImg(+d.i),img:d=>{const t=$$('.ths img');showImg(t.findIndex(x=>x.classList.contains('on'))+ +d.d,+d.d>0?'n':'p')},fic:d=>ficTo(+($('.fs')||{dataset:{i:0}}).dataset.i+ +d.d),fdot:d=>ficTo(+d.i),lbp:()=>lbShow(lbI-1),lbn:()=>lbShow(lbI+1),
   zoom:(d,el)=>{const fs=el.closest('.fs'),t=$$('.ths img');if(fs){lbL=JSON.parse(fs.dataset.u);lbI=+fs.dataset.i}else if(t.length>1){lbL=t.map(x=>x.src);lbI=Math.max(0,t.findIndex(x=>x.classList.contains('on')))}else{lbL=[el.src];lbI=0}$('#lb').classList.toggle('s1',lbL.length<2);$('#lb img').src=lbL[lbI];$('#lb').classList.remove('hidden')},closeLb:()=>$('#lb').classList.add('hidden'),
   login:()=>{$('#lm').textContent='';$('#lg').classList.remove('hidden');$('#lu').focus()},
@@ -413,6 +493,8 @@ const A={
   logout:async()=>{await sb.auth.signOut();closeAdmin();await refreshAuth()},
   tab:d=>{$$('.tab').forEach(t=>t.classList.toggle('on',t.dataset.t===d.t));$('#tp').classList.toggle('hidden',d.t!=='p');$('#tc').classList.toggle('hidden',d.t!=='c')},
   af:d=>{aF=d.f;adminRender()},
+  back:()=>{if(history.state&&history.state.pv)history.back();else{history.replaceState(null,'',location.pathname+location.search);setPV(false)}},
+  importar:()=>$('#xf').click(),closeImp:()=>$('#im').classList.add('hidden'),doImport,
   nuevo:()=>openDrawer(null),edit:d=>openDrawer(prods.find(x=>x.id===+d.id)),
   del:d=>delProd(+d.id),delEdit:()=>editing&&delProd(editing.id),
   closeDrawer:()=>$('#dw').classList.add('hidden'),
@@ -435,7 +517,7 @@ $('#aq').addEventListener('input',e=>{aq=e.target.value;adminRender()});
 $('#ac').addEventListener('change',e=>{aCat=e.target.value;adminRender()});
 $('#cn').addEventListener('keydown',e=>{if(e.key==='Enter')addCat()});
 document.addEventListener('keydown',e=>{if(!$('#lb').classList.contains('hidden')&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){lbShow(lbI+(e.key==='ArrowRight'?1:-1));return}
-  if(e.key==='Escape'){$('#dw').classList.add('hidden');$('#lg').classList.add('hidden');$('#lb').classList.add('hidden')}
+  if(e.key==='Escape'){$('#dw').classList.add('hidden');$('#lg').classList.add('hidden');$('#lb').classList.add('hidden');$('#im').classList.add('hidden')}
   if((e.key==='ArrowRight'||e.key==='ArrowLeft')&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)&&$('#admin').classList.contains('hidden')&&$('#lg').classList.contains('hidden'))A.nav({d:e.key==='ArrowRight'?1:-1});
 });
 load();refreshAuth();
